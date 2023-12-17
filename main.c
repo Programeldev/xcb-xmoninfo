@@ -54,6 +54,21 @@ int main(void)
 	int len = xcb_randr_get_screen_resources_current_outputs_length(screen_reply);
 	xcb_randr_output_t* randr_outputs = xcb_randr_get_screen_resources_current_outputs(screen_reply);
 
+	xcb_randr_get_monitors_reply_t* randr_monitors = xcb_randr_get_monitors_reply(connection,
+																	xcb_randr_get_monitors(connection,
+																						window,
+																						1),
+																	NULL);
+
+	int mon_len = xcb_randr_get_monitors_monitors_length(randr_monitors);
+	xcb_randr_monitor_info_iterator_t randr_monitors_iterator = xcb_randr_get_monitors_monitors_iterator(randr_monitors);
+
+	xcb_randr_monitor_info_next(&randr_monitors_iterator);
+
+	xcb_randr_monitor_info_t* mon_info = randr_monitors_iterator.data;
+	// printf("%i | %c\n\n\n", randr_monitors_iterator.rem, randr_monitors_iterator.data->primary);
+	printf("%i\n", mon_info->nOutput);
+	
 	for(int i = 0; i < len; i++)
 	{
 		xcb_randr_get_output_info_reply_t* output_reply = xcb_randr_get_output_info_reply(connection,
@@ -84,6 +99,8 @@ int main(void)
 																			crtc_info_reply->y, 
 																			crtc_info_reply->width, 
 																			crtc_info_reply->height );
+
+		printf("    mm %i x %i\n", output_reply->mm_width, output_reply->mm_height);
 	
 		FREE(crtc_info_reply);
 		FREE(output_reply);
