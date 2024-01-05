@@ -1,5 +1,5 @@
 # xmoninfo 
-<img src="screenshot.png" width="200px"> 
+<img src="screenshot.png" width="400px"> 
 
 ## Usage 
 ``` 
